@@ -21,6 +21,9 @@ class GridView(
     }
 
     override fun print(printer: ConsolePrinter) {
+        val openedMine = grid.getOpenedMine()
+        val openedRow = openedMine?.row
+        val openedCol = openedMine?.col
 
         printer.print("   ")
         for(col in 0 until grid.colCount){
@@ -32,7 +35,10 @@ class GridView(
             printer.print("$row  ")
 
             for(col in gridViewArray[row].indices){
-                gridViewArray[row][col].print(printer)
+                if(openedMine != null && row == openedRow && col == openedCol)
+                    printer.print("X")
+                else
+                    gridViewArray[row][col].print(printer)
                 printer.print("  ")
             }
             printer.println("")

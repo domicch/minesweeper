@@ -8,16 +8,7 @@ class Grid(
     val colCount: Int,
     private val mineCount: Int
     ) {
-    private val checkVector = arrayOf(
-        arrayOf(-1,-1),
-        arrayOf(-1,0),
-        arrayOf(-1,1),
-        arrayOf(0,1),
-        arrayOf(1,1),
-        arrayOf(1,0),
-        arrayOf(1,-1),
-        arrayOf(0,-1)
-    )
+
 
     private var gridArray = arrayOf<Array<GridItem>>()
     private var closedItemCount = rowCount * colCount
@@ -30,7 +21,7 @@ class Grid(
         for(row in 0 until rowCount){
             var colArr = arrayOf<GridItem>()
             for(col in 0 until colCount){
-                colArr += EmptyMine(row, col)
+                colArr += EmptyMine(row, col, this)
             }
             gridArray += colArr
         }
@@ -52,7 +43,7 @@ class Grid(
         while(remain > 0){
             val num = Random.nextInt(0, range)
             if(num !in list && num != inputRow * colCount + inputCol){
-                val mine = Mine(num / colCount, num % colCount)
+                val mine = Mine(num / colCount, num % colCount, this)
                 val row = num / colCount
                 val col = num % colCount
                 gridArray[row][col] = mine
@@ -103,11 +94,19 @@ class Grid(
         if(closedItemCount - flaggedCount == 0 && flaggedCount == mineList.size){
             return mineList.all{mine -> mine.flagged()}
         }
-        return false;
+        return false
     }
 
     fun openAllMines(){
         mineList.forEach{it.open()}
+    }
+
+    fun inBounds(rol: Int, col: Int): Boolean {
+        return rol in 0 until rowCount && col in 0 until colCount
+    }
+
+    fun getOpenedMine(): GridItem?{
+        return openedMine
     }
 
     /**
@@ -116,55 +115,14 @@ class Grid(
      * 2. if mine count == 0, recursively do mine count around direct neighbours
      */
     private fun handleEmptyMine(item: GridItem) {
-        if(item.opened()
-            || item.flagged()
-            || item.getType() == GridItemType.MINE)
-            return
-
-        val emptyMine = item as EmptyMine
-
         item.open()
         closedItemCount--
-        val mineCount = countMinesAround(item)
-
-        if(mineCount > 0){
-            emptyMine.hint = mineCount
-        }else{
-            checkVector.forEach {
-                val checkRow = item.row + it[0]
-                val checkCol = item.col + it[1]
-
-                if(inBounds(checkRow, checkCol)){
-                    handleEmptyMine(getGridItem(checkRow, checkCol))
-                }
-            }
-        }
-    }
-
-    private fun countMinesAround(item: GridItem): Int{
-        var mineCount = 0
-
-        checkVector.forEach {
-            val checkRow = item.row + it[0]
-            val checkCol = item.col + it[1]
-
-            if(inBounds(checkRow, checkCol)){
-                if(getGridItem(checkRow, checkCol).getType() == GridItemType.MINE)
-                    mineCount++
-            }
-        }
-
-        return mineCount
-    }
-
-    private fun inBounds(rol: Int, col: Int): Boolean {
-        return rol in 0 until rowCount && col in 0 until colCount
     }
 
     private fun handleMine(item: Mine) {
         item.open()
-        item.stepped = true
         openedMine = item
     }
+
 
 }

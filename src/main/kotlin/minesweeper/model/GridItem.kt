@@ -2,15 +2,16 @@ package minesweeper.model
 
 abstract class GridItem(
     val row: Int,
-    val col: Int
+    val col: Int,
+    protected val grid: Grid
     ) {
 
-    private var opened: Boolean = false
-    private var flagged: Boolean = false
+    protected var opened: Boolean = false
+    protected var flagged: Boolean = false
 
     abstract fun getType(): GridItemType
 
-    fun open(){
+    open fun open(){
         this.opened = true
     }
 

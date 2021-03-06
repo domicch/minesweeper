@@ -40,6 +40,7 @@ class Game (){
     }
 
     fun toggleFlag(row:Int, col: Int){
+        checkBounds(row, col)
         grid.toggleFlag(row, col)
         updateWinLose()
     }
@@ -56,9 +57,9 @@ class Game (){
     }
 
     // any better way of creating read-only properties (but still modifiable inside the class)?
-    public fun getScore() = score
-    public fun getStatus() = status
-    public fun getGrid() = grid
+    fun getScore() = score
+    fun getStatus() = status
+    fun getGrid() = grid
 
 //    private fun generateMines(inputRow: Int, inputCol: Int){
 //        val range = rowCount * colCount

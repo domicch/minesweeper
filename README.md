@@ -16,7 +16,7 @@ A number of concerns on system design and Kotlin
 
 ### Design related
 
-####1. The need to use inheritance for Mine and EmptyMine, or just a single Class with isMine() property
+1. The need to use inheritance for Mine and EmptyMine, or just a single Class with isMine() property
 
 Pros:
 - Allow creation of new type of item easily

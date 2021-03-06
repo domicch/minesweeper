@@ -27,11 +27,11 @@ A number of concerns on system design and Kotlin
 
 2. The need to separate View logic into separate class. E.g. Grid -> GridView, vs implement Printable interface directly by model class
 
-Pros:
-- Allow model class to be reused by new rendering methods without modifying model classes (e.g. GUI display)
+  - Pros:
+    - Allow model class to be reused by new rendering methods without modifying model classes (e.g. GUI display)
 
-Cons:
-- In order for View Classes to access Model Classes data, Model Classes are forced to expose internal data structure (e.g. Game.getGrid(), Grid.getGridItem())
+  - Cons:
+    - In order for View Classes to access Model Classes data, Model Classes are forced to expose internal data structure (e.g. Game.getGrid(), Grid.getGridItem())
 
 ### Kotlin related
 

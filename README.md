@@ -18,12 +18,12 @@ A number of concerns on system design and Kotlin
 
 1. The need to use inheritance for Mine and EmptyMine, or just a single Class with isMine() property
 
-Pros:
-- Allow creation of new type of item easily
+  - Pros:
+    - Allow creation of new type of item easily
 
-Cons:
-- Weak distinction of features between Mine and EmptyMine. Separated mainly for UI display purpose
-- Frequent need of distinguishing between mine and not mine with GridItem.getType() and type casts Classes (e.g. Grid)
+  - Cons:
+    - Weak distinction of features between Mine and EmptyMine. Separated mainly for UI display purpose
+    - Frequent need of distinguishing between mine and not mine with GridItem.getType() and type casts Classes (e.g. Grid)
 
 2. The need to separate View logic into separate class. E.g. Grid -> GridView, vs implement Printable interface directly by model class
 

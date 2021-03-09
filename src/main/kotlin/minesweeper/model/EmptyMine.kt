@@ -1,6 +1,9 @@
 package minesweeper.model
 
-class EmptyMine(row: Int, col: Int): GridItem(row, col) {
+data class EmptyMine(
+    override val row: Int,
+    override val col: Int
+    ): GridItem() {
     var hint: Int? = null
 
     override fun getType(): GridItemType {

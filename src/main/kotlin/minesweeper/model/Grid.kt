@@ -3,7 +3,7 @@ package minesweeper.model
 import minesweeper.exceptions.GameException
 import kotlin.random.Random
 
-class Grid(
+data class Grid(
     val rowCount: Int,
     val colCount: Int,
     private val mineCount: Int

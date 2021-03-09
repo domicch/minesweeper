@@ -1,26 +1,17 @@
 package minesweeper.view
 
+import minesweeper.model.EmptyMine
 import minesweeper.model.Grid
 import minesweeper.model.GridItemType
+import minesweeper.model.Mine
 
 class GridView(
-    private val grid: Grid
-): Printable {
+    private val printer: ConsolePrinter
+){
+    private val mineView = MineView(printer)
+    private val emptyMineView = EmptyMineView(printer)
 
-    private var gridViewArray = arrayOf<Array<GridItemView>>()
-
-    init {
-
-        for(row in 0 until grid.rowCount){
-            var colArr = arrayOf<GridItemView>()
-            for(col in 0 until grid.colCount){
-                colArr += GridItemViewFactory.createGridItemView(grid.getGridItem(row, col))
-            }
-            gridViewArray += colArr
-        }
-    }
-
-    override fun print(printer: ConsolePrinter) {
+    fun print(grid: Grid) {
         val openedMine = grid.getOpenedMine()
         val openedRow = openedMine?.row
         val openedCol = openedMine?.col
@@ -31,37 +22,44 @@ class GridView(
         }
         printer.println("")
 
-        for(row in gridViewArray.indices){
+        for(row in 0 until grid.rowCount){
             printer.print("$row  ")
 
-            for(col in gridViewArray[row].indices){
+            for(col in 0 until grid.colCount){
                 if(openedMine != null && row == openedRow && col == openedCol)
                     printer.print("X")
-                else
-                    gridViewArray[row][col].print(printer)
+                else {
+                    val gridItem = grid.getGridItem(row, col)
+
+                    when (gridItem.getType()) {
+                        GridItemType.MINE -> mineView.print(gridItem as Mine)
+                        GridItemType.EMPTY_MINE -> emptyMineView.print(gridItem as EmptyMine)
+                    }
+                }
                 printer.print("  ")
             }
             printer.println("")
         }
     }
 
-    fun printDebug(printer: ConsolePrinter){
+    fun printDebug(grid: Grid){
+
         printer.print("   ")
         for(col in 0 until grid.colCount){
             printer.print("$col  ")
         }
         printer.println("")
 
-        for(row in gridViewArray.indices){
+        for(row in 0 until grid.rowCount){
             printer.print("$row  ")
 
-            for(col in gridViewArray[row].indices){
+            for(col in 0 until grid.colCount){
                 val item = grid.getGridItem(row, col)
 
                 if(item.getType() == GridItemType.MINE){
                     printer.print("B  ")
                 }else {
-                    gridViewArray[row][col].print(printer)
+                    emptyMineView.print(item as EmptyMine)
                     printer.print("  ")
                 }
             }

@@ -3,11 +3,14 @@ package minesweeper.view
 import minesweeper.model.EmptyMine
 
 class EmptyMineView(
-    private val emptyMine: EmptyMine
-): GridItemView(emptyMine) {
+    printer: ConsolePrinter
+): GridItemView(printer) {
 
-    override fun printTypeSpecific(printer: ConsolePrinter) {
-        printer.print(emptyMine.hint?.toString() ?: " ")
+    fun print(emptyMine: EmptyMine) {
+        if(emptyMine.opened())
+            printer.print(emptyMine.hint?.toString() ?: " ")
+        else
+            super.printClosedItem(emptyMine)
     }
 
 }

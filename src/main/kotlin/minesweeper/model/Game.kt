@@ -1,5 +1,6 @@
 package minesweeper.model
 
+import minesweeper.exceptions.GameException
 import minesweeper.exceptions.InvalidInputException
 import kotlin.jvm.Throws
 import kotlin.random.Random
@@ -14,20 +15,22 @@ class Game (){
     private var status = GameStatus.INIT
     private var grid = Grid(rowCount, colCount, mineCount)
 
-
-
-    fun startGame(inputRow: Int, inputCol: Int){
-        checkBounds(inputRow, inputCol)
-        grid.generateMines(inputRow, inputCol)
-        grid.action(inputRow, inputCol)
-        status = GameStatus.STARTED
-    }
-
+    @Throws(GameException::class)
     fun action(row: Int, col: Int){
         checkBounds(row, col)
-        grid.action(row, col)
 
-        updateWinLose()
+        when(status){
+            GameStatus.INIT -> {
+                grid.generateMines(row, col)
+                grid.action(row, col)
+                status = GameStatus.STARTED
+            }
+            GameStatus.STARTED -> {
+                grid.action(row, col)
+                updateWinLose()
+            }
+            else -> throw GameException("Invalid Status")
+        }
     }
 
     private fun updateWinLose(){
@@ -39,14 +42,14 @@ class Game (){
         }
     }
 
+    @Throws(GameException::class)
     fun toggleFlag(row:Int, col: Int){
+        if(status != GameStatus.STARTED)
+            throw GameException("Invalid Status")
+
         checkBounds(row, col)
         grid.toggleFlag(row, col)
         updateWinLose()
-    }
-
-    fun exitGame(){
-        status = GameStatus.EXIT
     }
 
     @Throws(InvalidInputException::class)
@@ -60,22 +63,4 @@ class Game (){
     fun getScore() = score
     fun getStatus() = status
     fun getGrid() = grid
-
-//    private fun generateMines(inputRow: Int, inputCol: Int){
-//        val range = rowCount * colCount
-//        var remain = mineCount
-//        val list = mutableListOf<Int>()
-//
-//        while(remain > 0){
-//            val num = Random.nextInt(0, range)
-//            if(num !in list && num != inputRow * colCount + inputCol){
-//                val mine = Mine(num / colCount, num % colCount)
-//                val row = num / colCount
-//                val col = num % colCount
-//                grid.setGridItem(row, col, mine)
-//                list += num
-//                remain--
-//            }
-//        }
-//    }
 }

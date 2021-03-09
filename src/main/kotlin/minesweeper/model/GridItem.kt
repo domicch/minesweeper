@@ -2,8 +2,7 @@ package minesweeper.model
 
 abstract class GridItem(
     val row: Int,
-    val col: Int,
-    protected val grid: Grid
+    val col: Int
     ) {
 
     protected var opened: Boolean = false

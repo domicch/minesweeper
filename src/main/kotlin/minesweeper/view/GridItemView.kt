@@ -3,29 +3,22 @@ package minesweeper.view
 import minesweeper.model.GridItem
 
 abstract class GridItemView(
-    private val gridItem: GridItem
-): Printable {
+    protected val printer: ConsolePrinter
+) {
 
-    override fun print(printer: ConsolePrinter) {
-        if(gridItem.opened()){
-            printTypeSpecific(printer)
-            return;
-        }
-
+    protected fun printClosedItem(gridItem: GridItem) {
         if(gridItem.flagged()){
-            printFlagged(printer)
+            printFlagged()
         }else{
-            printClosed(printer)
+            printClosed()
         }
     }
 
-    private fun printFlagged(printer: ConsolePrinter){
+    private fun printFlagged(){
         printer.print("F")
     }
 
-    private fun printClosed(printer: ConsolePrinter){
+    private fun printClosed(){
         printer.print("?")
     }
-
-    protected abstract fun printTypeSpecific(printer: ConsolePrinter)
 }

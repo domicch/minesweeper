@@ -1,6 +1,6 @@
 package minesweeper.model
 
-class Mine(row: Int, col: Int, grid: Grid): GridItem(row, col, grid) {
+class Mine(row: Int, col: Int): GridItem(row, col) {
 
     override fun getType(): GridItemType {
         return GridItemType.MINE

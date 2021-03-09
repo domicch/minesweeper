@@ -3,20 +3,19 @@ package minesweeper.view
 import minesweeper.model.Game
 
 class GameView(
-    private var game: Game
-): Printable{
+    private val printer: ConsolePrinter
+){
+    private val gridView = GridView(printer)
 
-    private var gridView: GridView = GridView(game.getGrid())
-
-    override fun print(printer: ConsolePrinter) {
+    fun print(game: Game) {
         printer.println("Status: ${game.getStatus()}")
         printer.println("Score: ${game.getScore()}")
-        gridView.print(printer)
+        gridView.print(game.getGrid())
     }
 
-    fun printDebug(printer: ConsolePrinter){
+    fun printDebug(game: Game){
         printer.println("Status: ${game.getStatus()}")
         printer.println("Score: ${game.getScore()}")
-        gridView.printDebug(printer)
+        gridView.printDebug(game.getGrid())
     }
 }
